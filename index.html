@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentic Tracker Yuzar - Multi-Chain Explorer</title>
+    <title>Agentic Tracker Yuzar - All-in-One</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -29,10 +29,9 @@
             background: #000000;
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Animated Grid Background */
+        /* Animated Background */
         .grid-background {
             position: fixed;
             top: 0;
@@ -52,7 +51,6 @@
             100% { background-position: 50px 50px; }
         }
 
-        /* Gradient Orbs */
         .orb-container {
             position: fixed;
             top: 0;
@@ -89,15 +87,6 @@
             animation-delay: -10s;
         }
 
-        .orb-3 {
-            width: 400px;
-            height: 400px;
-            background: var(--base-gradient);
-            top: 50%;
-            right: 10%;
-            animation-delay: -5s;
-        }
-
         @keyframes orbFloat {
             0%, 100% { transform: translate(0, 0) scale(1); }
             33% { transform: translate(100px, -100px) scale(1.1); }
@@ -113,11 +102,11 @@
         }
 
         .container-custom {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* Header/Branding */
+        /* Header */
         .brand-header {
             text-align: center;
             margin-bottom: 50px;
@@ -142,32 +131,11 @@
             color: white;
             box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5);
             animation: logoPulse 3s ease-in-out infinite;
-            position: relative;
         }
 
         @keyframes logoPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5); }
-            50% { transform: scale(1.05); box-shadow: 0 25px 80px rgba(102, 126, 234, 0.7); }
-        }
-
-        .brand-logo::before {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            border-radius: 28px;
-            padding: 5px;
-            background: var(--primary-gradient);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.5;
-            animation: rotateBorder 10s linear infinite;
-        }
-
-        @keyframes rotateBorder {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .brand-name {
@@ -193,76 +161,92 @@
             font-weight: 600;
         }
 
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 35px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-gradient);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Main Card */
-        .tracker-card {
+        .main-card {
             background: rgba(15, 15, 30, 0.8);
             backdrop-filter: blur(40px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px;
             padding: 50px 45px;
             box-shadow: 0 30px 100px rgba(0, 0, 0, 0.7);
-            animation: fadeInUp 0.8s ease-out 0.2s both;
-            position: relative;
-            overflow: hidden;
+            margin-bottom: 30px;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .tracker-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--primary-gradient);
-        }
-
-        /* Chain Grid */
+        /* Scanner Styles */
         .chains-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
 
         .chain-card {
-            padding: 25px 20px;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.03);
             border: 2px solid rgba(255, 255, 255, 0.08);
             border-radius: 18px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chain-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            transition: left 0.5s;
-        }
-
-        .chain-card:hover::before {
-            left: 100%;
+            transition: all 0.3s;
+            text-align: center;
         }
 
         .chain-card:hover {
             transform: translateY(-5px);
             border-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
         .chain-card.active {
-            border-width: 2px;
             transform: translateY(-5px);
         }
 
@@ -297,14 +281,14 @@
         }
 
         .chain-icon-wrapper {
-            width: 55px;
-            height: 55px;
-            border-radius: 14px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 1.8rem;
+            margin: 0 auto 12px;
+            font-size: 1.5rem;
             color: white;
         }
 
@@ -315,22 +299,20 @@
         .chain-card.solana .chain-icon-wrapper { background: var(--solana-gradient); }
 
         .chain-name-text {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: white;
-            text-align: center;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
 
         .chain-type {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.5);
-            text-align: center;
         }
 
-        /* Input Section */
+        /* Input Styles */
         .input-section {
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
 
         .section-label {
@@ -345,20 +327,20 @@
             gap: 8px;
         }
 
-        .input-container {
+        .input-wrapper {
             position: relative;
         }
 
         .address-input {
             width: 100%;
-            padding: 22px 130px 22px 22px;
+            padding: 20px 130px 20px 20px;
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+            border-radius: 15px;
             color: white;
             font-size: 1rem;
             font-family: 'Courier New', monospace;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .address-input:focus {
@@ -374,7 +356,7 @@
 
         .input-actions {
             position: absolute;
-            right: 12px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
@@ -382,8 +364,8 @@
         }
 
         .input-action-btn {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 10px;
@@ -393,13 +375,6 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .input-action-btn.show {
-            opacity: 1;
-            pointer-events: all;
         }
 
         .input-action-btn:hover {
@@ -414,18 +389,12 @@
 
         /* Status Bar */
         .status-bar {
-            margin-top: 18px;
-            padding: 16px 20px;
+            margin-top: 15px;
+            padding: 15px 20px;
             border-radius: 12px;
             display: none;
             align-items: center;
-            gap: 15px;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            gap: 12px;
         }
 
         .status-bar.show { display: flex; }
@@ -440,20 +409,14 @@
             border: 1px solid rgba(255, 71, 87, 0.3);
         }
 
-        .status-bar.info {
-            background: rgba(102, 126, 234, 0.12);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-        }
-
         .status-icon {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
+            font-size: 1rem;
         }
 
         .status-bar.success .status-icon {
@@ -466,59 +429,30 @@
             color: #ff4757;
         }
 
-        .status-bar.info .status-icon {
-            background: rgba(102, 126, 234, 0.2);
-            color: #667eea;
-        }
-
         .status-text {
             flex: 1;
             color: white;
-            font-size: 0.95rem;
-        }
-
-        .status-text strong {
-            font-weight: 700;
+            font-size: 0.9rem;
         }
 
         /* Action Button */
         .action-button {
             width: 100%;
-            padding: 22px;
+            padding: 20px;
             background: var(--primary-gradient);
             border: none;
-            border-radius: 16px;
+            border-radius: 15px;
             color: white;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            margin-bottom: 35px;
             box-shadow: 0 15px 50px rgba(102, 126, 234, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .action-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .action-button:hover::before {
-            width: 400px;
-            height: 400px;
+            margin-bottom: 30px;
         }
 
         .action-button:hover:not(:disabled) {
@@ -529,151 +463,257 @@
         .action-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .button-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Examples Section */
-        .examples-section {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 35px;
-        }
-
-        .examples-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .examples-title {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .examples-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 12px;
-        }
-
-        .example-item {
-            padding: 16px 18px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .example-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
-        }
-
-        .example-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .example-info {
-            flex: 1;
-        }
-
-        .example-name {
-            color: white;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 3px;
-        }
-
-        .example-chain {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.75rem;
-        }
-
-        /* Stats Section */
-        .stats-section {
+        /* Portfolio Styles */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             padding: 25px;
             text-align: center;
             transition: all 0.3s;
         }
 
         .stat-card:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
             transform: translateY(-5px);
         }
 
-        .stat-icon-wrapper {
-            width: 55px;
-            height: 55px;
-            background: var(--primary-gradient);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 1.5rem;
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
         }
 
         .stat-value {
-            color: white;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 800;
-            margin-bottom: 8px;
+            color: white;
         }
 
-        .stat-label {
-            color: rgba(255, 255, 255, 0.5);
+        /* Form Styles */
+        .add-form {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
             font-size: 0.85rem;
             font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Loading Spinner */
-        .spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
+        .form-input, .form-select {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Table Styles */
+        .portfolio-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .portfolio-table thead {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .portfolio-table th {
+            padding: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: left;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .portfolio-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .portfolio-table tbody tr {
+            transition: background 0.2s;
+        }
+
+        .portfolio-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .coin-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .coin-icon {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .coin-icon.btc { background: linear-gradient(135deg, #f7931a 0%, #f7b731 100%); }
+        .coin-icon.eth { background: var(--eth-gradient); }
+        .coin-icon.bnb { background: var(--bsc-gradient); }
+        .coin-icon.sol { background: var(--solana-gradient); }
+        .coin-icon.base { background: var(--base-gradient); }
+        .coin-icon.custom { background: var(--primary-gradient); }
+
+        .coin-name {
+            font-weight: 700;
+            color: white;
+        }
+
+        .coin-symbol {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .usdt-value {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            color: #26de81;
+            font-size: 1.05rem;
+        }
+
+        /* Buttons */
+        .btn-primary-custom {
+            padding: 12px 25px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-action {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #2980b9;
+            transform: scale(1.1);
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        /* Loading & Empty States */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
         }
 
         /* Toast */
@@ -682,33 +722,32 @@
             top: 30px;
             right: 30px;
             background: rgba(15, 15, 30, 0.95);
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
+            border-radius: 15px;
             padding: 20px 25px;
-            box-shadow: 0 20px 70px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             gap: 15px;
             z-index: 1000;
-            animation: toastIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideIn 0.3s;
             max-width: 400px;
         }
 
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(100px); }
-            to { opacity: 1; transform: translateX(0); }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .toast-icon-wrapper {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            flex-shrink: 0;
+            font-size: 1.2rem;
             background: rgba(20, 241, 149, 0.2);
             color: #14F195;
         }
@@ -717,31 +756,77 @@
             color: white;
             font-weight: 700;
             margin: 0 0 5px 0;
-            font-size: 1rem;
         }
 
         .toast-content p {
             color: rgba(255, 255, 255, 0.6);
             margin: 0;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.85rem;
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
         }
 
-        .footer a {
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            transition: color 0.2s;
+        .modal-overlay.show {
+            display: flex;
         }
 
-        .footer a:hover {
+        .modal-content {
+            background: rgba(15, 15, 30, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            animation: scaleIn 0.3s;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
             color: white;
+        }
+
+        .modal-close {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
         }
 
         /* Responsive */
@@ -749,13 +834,13 @@
             .brand-name {
                 font-size: 2.5rem;
             }
-            .tracker-card {
-                padding: 35px 25px;
+            .main-card {
+                padding: 30px 25px;
             }
             .chains-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .examples-grid {
+            .form-row {
                 grid-template-columns: 1fr;
             }
             .toast {
@@ -774,7 +859,6 @@
     <div class="orb-container">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
     </div>
 
     <!-- Main Content -->
@@ -786,255 +870,290 @@
                     <i class="fas fa-rocket"></i>
                 </div>
                 <h1 class="brand-name">AGENTIC TRACKER</h1>
-                <p class="brand-tagline">Multi-Chain Blockchain Explorer</p>
+                <p class="brand-tagline">Multi-Chain Explorer & Portfolio Manager</p>
                 <p class="powered-by">Powered by Yuzar © 2025</p>
             </div>
 
-            <!-- Main Tracker Card -->
-            <div class="tracker-card">
-                <!-- Chain Selection -->
-                <div class="section-label">
-                    <i class="fas fa-network-wired"></i>
-                    Select Blockchain Network
-                </div>
-                <div class="chains-grid">
-                    <div class="chain-card eth active" id="chain-eth" onclick="selectChain('eth')">
-                        <div class="chain-icon-wrapper">
-                            <i class="fab fa-ethereum"></i>
-                        </div>
-                        <div class="chain-name-text">Ethereum</div>
-                        <div class="chain-type">EVM Chain</div>
-                    </div>
-                    <div class="chain-card bsc" id="chain-bsc" onclick="selectChain('bsc')">
-                        <div class="chain-icon-wrapper">
-                            <i class="fas fa-coins"></i>
-                        </div>
-                        <div class="chain-name-text">BSC</div>
-                        <div class="chain-type">BNB Chain</div>
-                    </div>
-                    <div class="chain-card polygon" id="chain-polygon" onclick="selectChain('polygon')">
-                        <div class="chain-icon-wrapper">
-                            <i class="fas fa-chess-knight"></i>
-                        </div>
-                        <div class="chain-name-text">Polygon</div>
-                        <div class="chain-type">L2 Chain</div>
-                    </div>
-                    <div class="chain-card base" id="chain-base" onclick="selectChain('base')">
-                        <div class="chain-icon-wrapper">
-                            <i class="fas fa-layer-group"></i>
-                        </div>
-                        <div class="chain-name-text">Base</div>
-                        <div class="chain-type">L2 on ETH</div>
-                    </div>
-                    <div class="chain-card solana" id="chain-solana" onclick="selectChain('solana')">
-                        <div class="chain-icon-wrapper">
-                            <i class="fas fa-sun"></i>
-                        </div>
-                        <div class="chain-name-text">Solana</div>
-                        <div class="chain-type">High Speed</div>
-                    </div>
-                </div>
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab('scanner')">
+                    <i class="fas fa-search"></i>
+                    Chain Scanner
+                </button>
+                <button class="tab-btn" onclick="switchTab('portfolio')">
+                    <i class="fas fa-wallet"></i>
+                    My Portfolio
+                </button>
+            </div>
 
-                <!-- Input Section -->
-                <div class="input-section">
-                    <div class="section-label" id="inputLabel">
-                        <i class="fas fa-wallet"></i>
-                        Enter Address
+            <!-- Scanner Tab -->
+            <div class="tab-content active" id="scanner-tab">
+                <div class="main-card">
+                    <div class="section-label">
+                        <i class="fas fa-network-wired"></i>
+                        Select Blockchain Network
                     </div>
-                    <div class="input-container">
-                        <input 
-                            type="text" 
-                            class="address-input" 
-                            id="addressInput"
-                            placeholder="Paste address here..."
-                            autocomplete="off"
-                            spellcheck="false"
-                        >
-                        <div class="input-actions">
-                            <button class="input-action-btn detect" id="detectBtn" onclick="autoDetect()" title="Auto Detect Chain">
-                                <i class="fas fa-magic"></i>
-                            </button>
-                            <button class="input-action-btn" id="clearBtn" onclick="clearInput()" title="Clear">
-                                <i class="fas fa-times"></i>
-                            </button>
+                    <div class="chains-grid">
+                        <div class="chain-card eth active" id="chain-eth" onclick="selectChain('eth')">
+                            <div class="chain-icon-wrapper">
+                                <i class="fab fa-ethereum"></i>
+                            </div>
+                            <div class="chain-name-text">Ethereum</div>
+                            <div class="chain-type">EVM Chain</div>
+                        </div>
+                        <div class="chain-card bsc" id="chain-bsc" onclick="selectChain('bsc')">
+                            <div class="chain-icon-wrapper">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="chain-name-text">BSC</div>
+                            <div class="chain-type">BNB Chain</div>
+                        </div>
+                        <div class="chain-card polygon" id="chain-polygon" onclick="selectChain('polygon')">
+                            <div class="chain-icon-wrapper">
+                                <i class="fas fa-chess-knight"></i>
+                            </div>
+                            <div class="chain-name-text">Polygon</div>
+                            <div class="chain-type">L2 Chain</div>
+                        </div>
+                        <div class="chain-card base" id="chain-base" onclick="selectChain('base')">
+                            <div class="chain-icon-wrapper">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div class="chain-name-text">Base</div>
+                            <div class="chain-type">L2 on ETH</div>
+                        </div>
+                        <div class="chain-card solana" id="chain-solana" onclick="selectChain('solana')">
+                            <div class="chain-icon-wrapper">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="chain-name-text">Solana</div>
+                            <div class="chain-type">High Speed</div>
                         </div>
                     </div>
-                    <div class="status-bar" id="statusBar">
-                        <div class="status-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="status-text" id="statusText"></div>
-                    </div>
-                </div>
 
-                <!-- Action Button -->
-                <button class="action-button" id="actionBtn" onclick="openExplorer()" disabled>
-                    <div class="button-content">
+                    <div class="input-section">
+                        <div class="section-label">
+                            <i class="fas fa-wallet"></i>
+                            Enter Address
+                        </div>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                class="address-input" 
+                                id="scannerInput"
+                                placeholder="Paste address here..."
+                                autocomplete="off"
+                            >
+                            <div class="input-actions">
+                                <button class="input-action-btn detect" onclick="autoDetect()" title="Auto Detect">
+                                    <i class="fas fa-magic"></i>
+                                </button>
+                                <button class="input-action-btn" onclick="clearScannerInput()" title="Clear">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="status-bar" id="scannerStatus">
+                            <div class="status-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="status-text" id="scannerStatusText"></div>
+                        </div>
+                    </div>
+
+                    <button class="action-button" id="scannerBtn" onclick="openExplorer()" disabled>
                         <i class="fas fa-rocket"></i>
                         <span>Launch Explorer</span>
-                    </div>
-                </button>
-
-                <!-- Examples -->
-                <div class="examples-section">
-                    <div class="examples-header">
-                        <div class="examples-title">
-                            <i class="fas fa-star"></i>
-                            Popular Addresses
-                        </div>
-                    </div>
-                    <div class="examples-grid" id="examplesGrid">
-                        <!-- Populated by JS -->
-                    </div>
-                </div>
-
-                <!-- Stats -->
-                <div class="stats-section">
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="stat-value" id="statScans">0</div>
-                        <div class="stat-label">Scans Today</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper" style="background: var(--solana-gradient);">
-                            <i class="fas fa-network-wired"></i>
-                        </div>
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">Chains Supported</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper" style="background: var(--base-gradient);">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <div class="stat-value">< 2s</div>
-                        <div class="stat-label">Avg Response</div>
-                    </div>
+                    </button>
                 </div>
             </div>
 
-            <!-- Footer -->
-            <div class="footer">
-                <p>
-                    Built with ❤️ by <strong>Yuzar</strong> | 
-                    <a href="https://github.com/yuzar" target="_blank">GitHub</a> | 
-                    <a href="mailto:yuzar@example.com">Contact</a>
-                </p>
+            <!-- Portfolio Tab -->
+            <div class="tab-content" id="portfolio-tab">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Value (USDT)</div>
+                        <div class="stat-value" id="totalValueUSDT">$0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Holdings</div>
+                        <div class="stat-value" id="totalHoldings">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Best Performer</div>
+                        <div class="stat-value" id="bestPerformer">-</div>
+                    </div>
+                </div>
+
+                <div class="main-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                        <h2 style="color: white; font-size: 1.8rem; font-weight: 800; margin: 0;">
+                            <i class="fas fa-coins"></i> My Portfolio
+                        </h2>
+                        <button class="btn-primary-custom" onclick="toggleAddForm()">
+                            <i class="fas fa-plus"></i>
+                            Add Crypto
+                        </button>
+                    </div>
+
+                    <div class="add-form" id="addForm" style="display: none;">
+                        <h4 style="margin-bottom: 20px; color: white;">
+                            <i class="fas fa-plus-circle"></i> Add New Crypto
+                        </h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Coin Type</label>
+                                <select class="form-select" id="coinType" onchange="handleCoinTypeChange()">
+                                    <option value="">Select Coin</option>
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="BNB">Binance Coin (BNB)</option>
+                                    <option value="SOL">Solana (SOL)</option>
+                                    <option value="BASE">Base Token</option>
+                                    <option value="CUSTOM">Custom Coin</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="customNameGroup" style="display: none;">
+                                <label class="form-label">Coin Name</label>
+                                <input type="text" class="form-input" id="customName" placeholder="e.g. Cardano">
+                            </div>
+                            <div class="form-group" id="customSymbolGroup" style="display: none;">
+                                <label class="form-label">Symbol</label>
+                                <input type="text" class="form-input" id="customSymbol" placeholder="e.g. ADA">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Amount (Coins)</label>
+                                <input type="number" step="any" class="form-input" id="coinAmount" placeholder="0.00">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Value in USDT</label>
+                                <input type="number" step="any" class="form-input" id="usdtValue" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button class="btn-primary-custom" onclick="saveCrypto()">
+                                <i class="fas fa-save"></i>
+                                Save
+                            </button>
+                            <button class="btn-primary-custom" onclick="toggleAddForm()" style="background: #95a5a6;">
+                                <i class="fas fa-times"></i>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="portfolioContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Loading portfolio...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Crypto</h3>
+                <button class="modal-close" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label class="form-label">Amount (Coins)</label>
+                <input type="number" step="any" class="form-input" id="editCoinAmount">
+            </div>
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label class="form-label">Value in USDT</label>
+                <input type="number" step="any" class="form-input" id="editUsdtValue">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-primary-custom" onclick="updateCrypto()" style="flex: 1;">
+                    <i class="fas fa-save"></i>
+                    Update
+                </button>
+                <button class="btn-primary-custom" onclick="closeEditModal()" style="flex: 1; background: #95a5a6;">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDb0XCzx13LR_lQ_W9zUGHdl4OCt5RmL0s",
+            authDomain: "cryptt-3f364.firebaseapp.com",
+            projectId: "cryptt-3f364",
+            storageBucket: "cryptt-3f364.firebasestorage.app",
+            messagingSenderId: "333311322801",
+            appId: "1:333311322801:web:7f02896dd29487a2fa5090",
+            measurementId: "G-KT5YB5E5PN"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ============================================
+        // SCANNER FUNCTIONALITY
+        // ============================================
         const CHAINS = {
             eth: {
                 name: 'Ethereum',
                 explorer: 'https://etherscan.io/address/',
-                format: /^0x[a-fA-F0-9]{40}$/,
-                placeholder: 'Enter Ethereum address (0x...)',
-                examples: [
-                    { name: 'USDT Contract', address: '0xdAC17F958D2ee523a2206206994597C13D831ec7', icon: 'fas fa-dollar-sign', gradient: 'var(--eth-gradient)' },
-                    { name: 'Vitalik.eth', address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', icon: 'fas fa-user', gradient: 'var(--eth-gradient)' }
-                ]
+                format: /^0x[a-fA-F0-9]{40}$/
             },
             bsc: {
                 name: 'BSC',
                 explorer: 'https://bscscan.com/address/',
-                format: /^0x[a-fA-F0-9]{40}$/,
-                placeholder: 'Enter BSC address (0x...)',
-                examples: [
-                    { name: 'WBNB Contract', address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', icon: 'fas fa-coins', gradient: 'var(--bsc-gradient)' },
-                    { name: 'PancakeSwap', address: '0x10ED43C718714eb63d5aA57B78B54704E256024E', icon: 'fas fa-exchange-alt', gradient: 'var(--bsc-gradient)' }
-                ]
+                format: /^0x[a-fA-F0-9]{40}$/
             },
             polygon: {
                 name: 'Polygon',
                 explorer: 'https://polygonscan.com/address/',
-                format: /^0x[a-fA-F0-9]{40}$/,
-                placeholder: 'Enter Polygon address (0x...)',
-                examples: [
-                    { name: 'USDC Polygon', address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', icon: 'fas fa-dollar-sign', gradient: 'var(--polygon-gradient)' },
-                    { name: 'WMATIC', address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', icon: 'fas fa-chess-knight', gradient: 'var(--polygon-gradient)' }
-                ]
+                format: /^0x[a-fA-F0-9]{40}$/
             },
             base: {
                 name: 'Base',
                 explorer: 'https://basescan.org/address/',
-                format: /^0x[a-fA-F0-9]{40}$/,
-                placeholder: 'Enter Base address (0x...)',
-                examples: [
-                    { name: 'USDC Base', address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', icon: 'fas fa-dollar-sign', gradient: 'var(--base-gradient)' },
-                    { name: 'WETH Base', address: '0x4200000000000000000000000000000000000006', icon: 'fab fa-ethereum', gradient: 'var(--base-gradient)' }
-                ]
+                format: /^0x[a-fA-F0-9]{40}$/
             },
             solana: {
                 name: 'Solana',
                 explorer: 'https://solscan.io/account/',
-                format: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/,
-                placeholder: 'Enter Solana address...',
-                examples: [
-                    { name: 'USDC Solana', address: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', icon: 'fas fa-dollar-sign', gradient: 'var(--solana-gradient)' },
-                    { name: 'Wrapped SOL', address: 'So11111111111111111111111111111111111111112', icon: 'fas fa-sun', gradient: 'var(--solana-gradient)' }
-                ]
+                format: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/
             }
         };
 
         let currentChain = 'eth';
         let currentAddress = '';
-        let scanCount = 0;
 
-        function selectChain(chain) {
+        window.selectChain = function(chain) {
             currentChain = chain;
-            
-            // Update UI
             document.querySelectorAll('.chain-card').forEach(card => card.classList.remove('active'));
             document.getElementById(`chain-${chain}`).classList.add('active');
-            
-            // Update input
-            document.getElementById('addressInput').placeholder = CHAINS[chain].placeholder;
-            
-            // Update examples
-            updateExamples();
-            
-            // Clear and revalidate
-            clearInput();
-            showToast('Chain Selected', `Now tracking ${CHAINS[chain].name} addresses`);
-        }
+            validateScannerAddress(document.getElementById('scannerInput').value.trim());
+            showToast('Chain Selected', `Now tracking ${CHAINS[chain].name}`);
+        };
 
-        function updateExamples() {
-            const grid = document.getElementById('examplesGrid');
-            grid.innerHTML = '';
-            
-            CHAINS[currentChain].examples.forEach(ex => {
-                const item = document.createElement('div');
-                item.className = 'example-item';
-                item.onclick = () => loadExample(ex.address, ex.name);
-                item.innerHTML = `
-                    <div class="example-icon" style="background: ${ex.gradient}">
-                        <i class="${ex.icon}"></i>
-                    </div>
-                    <div class="example-info">
-                        <div class="example-name">${ex.name}</div>
-                        <div class="example-chain">${CHAINS[currentChain].name}</div>
-                    </div>
-                `;
-                grid.appendChild(item);
-            });
-        }
-
-        function validateAddress(address) {
-            const statusBar = document.getElementById('statusBar');
-            const statusText = document.getElementById('statusText');
-            const actionBtn = document.getElementById('actionBtn');
-            const clearBtn = document.getElementById('clearBtn');
-            const detectBtn = document.getElementById('detectBtn');
-
-            clearBtn.classList.toggle('show', !!address);
-            detectBtn.classList.toggle('show', !!address);
+        window.validateScannerAddress = function(address) {
+            const statusBar = document.getElementById('scannerStatus');
+            const statusText = document.getElementById('scannerStatusText');
+            const scannerBtn = document.getElementById('scannerBtn');
 
             if (!address) {
                 statusBar.classList.remove('show');
-                actionBtn.disabled = true;
+                scannerBtn.disabled = true;
                 return false;
             }
 
@@ -1043,92 +1162,329 @@
             if (isValid) {
                 statusBar.className = 'status-bar success show';
                 statusBar.querySelector('.status-icon i').className = 'fas fa-check-circle';
-                statusText.innerHTML = `<strong>Valid ${CHAINS[currentChain].name} address!</strong> Ready to launch explorer`;
-                actionBtn.disabled = false;
+                statusText.innerHTML = `<strong>Valid ${CHAINS[currentChain].name} address!</strong> Ready to launch`;
+                scannerBtn.disabled = false;
                 currentAddress = address;
                 return true;
             } else {
                 statusBar.className = 'status-bar error show';
                 statusBar.querySelector('.status-icon i').className = 'fas fa-exclamation-circle';
-                statusText.innerHTML = `Invalid format for ${CHAINS[currentChain].name}. Please check your address.`;
-                actionBtn.disabled = true;
+                statusText.innerHTML = `Invalid format for ${CHAINS[currentChain].name}`;
+                scannerBtn.disabled = true;
                 return false;
             }
-        }
+        };
 
-        function autoDetect() {
-            const address = document.getElementById('addressInput').value.trim();
+        window.autoDetect = function() {
+            const address = document.getElementById('scannerInput').value.trim();
             if (!address) {
-                showToast('Auto-Detect', 'Please enter an address first', 'info');
+                showToast('Auto-Detect', 'Please enter an address first');
                 return;
             }
 
-            // Try to detect chain
             for (const [chain, data] of Object.entries(CHAINS)) {
                 if (data.format.test(address)) {
                     if (chain !== currentChain) {
                         selectChain(chain);
-                        showToast('Chain Detected!', `Switched to ${data.name}`, 'success');
-                    } else {
-                        showToast('Chain Confirmed', `Address matches ${data.name}`, 'success');
+                        showToast('Chain Detected!', `Switched to ${data.name}`);
                     }
-                    validateAddress(address);
+                    validateScannerAddress(address);
                     return;
                 }
             }
+            showToast('Detection Failed', 'Could not detect chain');
+        };
 
-            showToast('Detection Failed', 'Could not detect chain from address format', 'error');
-        }
-
-        function clearInput() {
-            document.getElementById('addressInput').value = '';
+        window.clearScannerInput = function() {
+            document.getElementById('scannerInput').value = '';
             currentAddress = '';
-            document.getElementById('clearBtn').classList.remove('show');
-            document.getElementById('detectBtn').classList.remove('show');
-            document.getElementById('statusBar').classList.remove('show');
-            document.getElementById('actionBtn').disabled = true;
-            document.getElementById('addressInput').focus();
-        }
+            document.getElementById('scannerStatus').classList.remove('show');
+            document.getElementById('scannerBtn').disabled = true;
+        };
 
-        function openExplorer() {
+        window.openExplorer = function() {
             if (!currentAddress) return;
-
-            const actionBtn = document.getElementById('actionBtn');
-            const btnContent = actionBtn.querySelector('.button-content');
-            
-            btnContent.innerHTML = '<div class="spinner"></div><span>Launching...</span>';
-            actionBtn.disabled = true;
-
+            const url = CHAINS[currentChain].explorer + currentAddress;
+            window.open(url, '_blank');
             showToast('Opening Explorer', `Launching ${CHAINS[currentChain].name} explorer...`);
+        };
 
-            setTimeout(() => {
-                const url = CHAINS[currentChain].explorer + currentAddress;
-                window.open(url, '_blank');
-                
-                btnContent.innerHTML = '<i class="fas fa-rocket"></i><span>Launch Explorer</span>';
-                actionBtn.disabled = false;
-                
-                // Update stats
-                scanCount++;
-                document.getElementById('statScans').textContent = scanCount;
-            }, 600);
+        document.getElementById('scannerInput').addEventListener('input', (e) => {
+            validateScannerAddress(e.target.value.trim());
+        });
+
+        document.getElementById('scannerInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !document.getElementById('scannerBtn').disabled) {
+                openExplorer();
+            }
+        });
+
+        // ============================================
+        // PORTFOLIO FUNCTIONALITY
+        // ============================================
+        let portfolioData = [];
+        let editingId = null;
+
+        const COIN_DATA = {
+            'BTC': { name: 'Bitcoin', symbol: 'BTC', icon: 'btc' },
+            'ETH': { name: 'Ethereum', symbol: 'ETH', icon: 'eth' },
+            'BNB': { name: 'Binance Coin', symbol: 'BNB', icon: 'bnb' },
+            'SOL': { name: 'Solana', symbol: 'SOL', icon: 'sol' },
+            'BASE': { name: 'Base Token', symbol: 'BASE', icon: 'base' }
+        };
+
+        async function loadPortfolio() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "coins"));
+                portfolioData = [];
+                querySnapshot.forEach((doc) => {
+                    portfolioData.push({ id: doc.id, ...doc.data() });
+                });
+                renderPortfolio();
+                updateStats();
+            } catch (error) {
+                console.error("Error:", error);
+                showToast('Error', 'Failed to load portfolio');
+            }
         }
 
-        function loadExample(address, name) {
-            document.getElementById('addressInput').value = address;
-            validateAddress(address);
-            showToast('Example Loaded', `${name} address loaded successfully`);
+        function renderPortfolio() {
+            const container = document.getElementById('portfolioContainer');
+
+            if (portfolioData.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-wallet"></i></div>
+                        <p>No crypto holdings yet. Add your first one!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table class="portfolio-table">
+                    <thead>
+                        <tr>
+                            <th>Coin</th>
+                            <th>Amount</th>
+                            <th>USDT Value</th>
+                            <th>Price/Coin</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            portfolioData.forEach(item => {
+                const pricePerCoin = item.coinAmount > 0 ? (item.usdtValue / item.coinAmount).toFixed(4) : '0.00';
+                html += `
+                    <tr>
+                        <td>
+                            <div class="coin-info">
+                                <div class="coin-icon ${item.icon}">
+                                    <i class="fas ${getCoinIcon(item.icon)}"></i>
+                                </div>
+                                <div>
+                                    <div class="coin-name">${item.name}</div>
+                                    <div class="coin-symbol">${item.symbol}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${parseFloat(item.coinAmount).toLocaleString()} ${item.symbol}</td>
+                        <td class="usdt-value">$${parseFloat(item.usdtValue).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td>$${pricePerCoin}</td>
+                        <td>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn-action btn-edit" onclick="window.editCrypto('${item.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-action btn-delete" onclick="window.deleteCrypto('${item.id}', '${item.name}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
         }
 
-        function showToast(title, message, type = 'success') {
-            const existingToast = document.querySelector('.toast');
-            if (existingToast) existingToast.remove();
+        function updateStats() {
+            const totalValue = portfolioData.reduce((sum, item) => sum + parseFloat(item.usdtValue), 0);
+            const totalHoldings = portfolioData.length;
+            let bestPerformer = '-';
+            if (portfolioData.length > 0) {
+                const sorted = [...portfolioData].sort((a, b) => b.usdtValue - a.usdtValue);
+                bestPerformer = sorted[0].symbol;
+            }
 
+            document.getElementById('totalValueUSDT').textContent = '$' + totalValue.toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('totalHoldings').textContent = totalHoldings;
+            document.getElementById('bestPerformer').textContent = bestPerformer;
+        }
+
+        window.toggleAddForm = function() {
+            const form = document.getElementById('addForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        };
+
+        window.handleCoinTypeChange = function() {
+            const coinType = document.getElementById('coinType').value;
+            const customNameGroup = document.getElementById('customNameGroup');
+            const customSymbolGroup = document.getElementById('customSymbolGroup');
+
+            if (coinType === 'CUSTOM') {
+                customNameGroup.style.display = 'block';
+                customSymbolGroup.style.display = 'block';
+            } else {
+                customNameGroup.style.display = 'none';
+                customSymbolGroup.style.display = 'none';
+            }
+        };
+
+        window.saveCrypto = async function() {
+            const coinType = document.getElementById('coinType').value;
+            const customName = document.getElementById('customName').value;
+            const customSymbol = document.getElementById('customSymbol').value;
+            const coinAmount = document.getElementById('coinAmount').value;
+            const usdtValue = document.getElementById('usdtValue').value;
+
+            if (!coinType || !coinAmount || !usdtValue) {
+                showToast('Error', 'Please fill all required fields');
+                return;
+            }
+
+            let coinData = {};
+            if (coinType === 'CUSTOM') {
+                if (!customName || !customSymbol) {
+                    showToast('Error', 'Please enter coin name and symbol');
+                    return;
+                }
+                coinData = { name: customName, symbol: customSymbol.toUpperCase(), icon: 'custom' };
+            } else {
+                coinData = COIN_DATA[coinType];
+            }
+
+            try {
+                await addDoc(collection(db, "coins"), {
+                    name: coinData.name,
+                    symbol: coinData.symbol,
+                    icon: coinData.icon,
+                    coinAmount: parseFloat(coinAmount),
+                    usdtValue: parseFloat(usdtValue),
+                    timestamp: new Date().toISOString()
+                });
+
+                showToast('Success', 'Crypto added successfully!');
+                toggleAddForm();
+                resetForm();
+                loadPortfolio();
+            } catch (error) {
+                console.error("Error:", error);
+                showToast('Error', 'Failed to add crypto');
+            }
+        };
+
+        window.editCrypto = function(id) {
+            const item = portfolioData.find(p => p.id === id);
+            if (!item) return;
+            editingId = id;
+            document.getElementById('editCoinAmount').value = item.coinAmount;
+            document.getElementById('editUsdtValue').value = item.usdtValue;
+            document.getElementById('editModal').classList.add('show');
+        };
+
+        window.updateCrypto = async function() {
+            const coinAmount = document.getElementById('editCoinAmount').value;
+            const usdtValue = document.getElementById('editUsdtValue').value;
+
+            if (!coinAmount || !usdtValue) {
+                showToast('Error', 'Please fill all fields');
+                return;
+            }
+
+            try {
+                const docRef = doc(db, "coins", editingId);
+                await updateDoc(docRef, {
+                    coinAmount: parseFloat(coinAmount),
+                    usdtValue: parseFloat(usdtValue),
+                    updatedAt: new Date().toISOString()
+                });
+
+                showToast('Success', 'Crypto updated successfully!');
+                closeEditModal();
+                loadPortfolio();
+            } catch (error) {
+                console.error("Error:", error);
+                showToast('Error', 'Failed to update crypto');
+            }
+        };
+
+        window.deleteCrypto = async function(id, name) {
+            if (!confirm(`Delete ${name}?`)) return;
+            try {
+                await deleteDoc(doc(db, "coins", id));
+                showToast('Success', 'Crypto deleted!');
+                loadPortfolio();
+            } catch (error) {
+                console.error("Error:", error);
+                showToast('Error', 'Failed to delete');
+            }
+        };
+
+        window.closeEditModal = function() {
+            document.getElementById('editModal').classList.remove('show');
+            editingId = null;
+        };
+
+        function resetForm() {
+            document.getElementById('coinType').value = '';
+            document.getElementById('customName').value = '';
+            document.getElementById('customSymbol').value = '';
+            document.getElementById('coinAmount').value = '';
+            document.getElementById('usdtValue').value = '';
+            document.getElementById('customNameGroup').style.display = 'none';
+            document.getElementById('customSymbolGroup').style.display = 'none';
+        }
+
+        function getCoinIcon(icon) {
+            const icons = {
+                'btc': 'fa-bitcoin',
+                'eth': 'fa-ethereum',
+                'bnb': 'fa-coins',
+                'sol': 'fa-sun',
+                'base': 'fa-layer-group',
+                'custom': 'fa-circle'
+            };
+            return icons[icon] || 'fa-circle';
+        }
+
+        // ============================================
+        // TAB SWITCHING
+        // ============================================
+        window.switchTab = function(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.closest('.tab-btn').classList.add('active');
+            document.getElementById(`${tab}-tab`).classList.add('active');
+
+            if (tab === 'portfolio') {
+                loadPortfolio();
+            }
+        };
+
+        // ============================================
+        // TOAST NOTIFICATION
+        // ============================================
+        function showToast(title, message) {
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerHTML = `
                 <div class="toast-icon-wrapper">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="toast-content">
                     <h6>${title}</h6>
@@ -1138,38 +1494,13 @@
             document.body.appendChild(toast);
 
             setTimeout(() => {
-                toast.style.animation = 'toastIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) reverse';
+                toast.style.animation = 'slideIn 0.3s reverse';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // Event listeners
-        document.getElementById('addressInput').addEventListener('input', (e) => {
-            validateAddress(e.target.value.trim());
-        });
-
-        document.getElementById('addressInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !document.getElementById('actionBtn').disabled) {
-                openExplorer();
-            }
-        });
-
-        document.getElementById('addressInput').addEventListener('paste', () => {
-            setTimeout(() => {
-                const address = document.getElementById('addressInput').value.trim();
-                if (validateAddress(address)) {
-                    showToast('Address Pasted', 'Valid address detected!');
-                }
-            }, 10);
-        });
-
-        // Initialize
-        updateExamples();
-        document.getElementById('addressInput').focus();
-
-        console.log('🚀 Agentic Tracker Yuzar - Initialized');
-        console.log('💎 All chains ready: ETH, BSC, Polygon, Base, Solana');
-        console.log('⚡ Powered by Yuzar © 2025');
+        console.log('🚀 Agentic Tracker Yuzar - Ready!');
+        console.log('💎 Scanner + Portfolio in one app!');
     </script>
 </body>
 </html>
