@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quick Explorer - Instant Blockchain Access</title>
+    <title>Agentic Tracker Yuzar - Multi-Chain Explorer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
 
         * {
             margin: 0;
@@ -15,360 +15,658 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --eth-gradient: linear-gradient(135deg, #627EEA 0%, #8A9FFF 100%);
+            --bsc-gradient: linear-gradient(135deg, #F3BA2F 0%, #FCD535 100%);
+            --polygon-gradient: linear-gradient(135deg, #8247E5 0%, #A855F7 100%);
+            --base-gradient: linear-gradient(135deg, #0052FF 0%, #00F0FF 100%);
+            --solana-gradient: linear-gradient(135deg, #14F195 0%, #9945FF 100%);
         }
 
-        .animated-bg {
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Grid Background */
+        .grid-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
+            background-image: 
+                linear-gradient(rgba(102, 126, 234, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(102, 126, 234, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        /* Gradient Orbs */
+        .orb-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
             overflow: hidden;
         }
 
-        .bubble {
+        .orb {
             position: absolute;
-            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
+            filter: blur(100px);
+            opacity: 0.3;
+            animation: orbFloat 20s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.3;
-            }
-            50% {
-                transform: translate(100px, -100px) scale(1.2);
-                opacity: 0.6;
-            }
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--eth-gradient);
+            top: -300px;
+            left: -200px;
         }
 
-        .container {
-            max-width: 700px;
-            width: 100%;
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--solana-gradient);
+            bottom: -250px;
+            right: -150px;
+            animation-delay: -10s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: var(--base-gradient);
+            top: 50%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-50px, 100px) scale(0.9); }
+        }
+
+        /* Main Container */
+        .main-wrapper {
             position: relative;
-            z-index: 1;
+            z-index: 2;
+            min-height: 100vh;
+            padding: 40px 20px;
         }
 
-        .main-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 50px 40px;
-            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.6s ease-out;
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .logo {
+        /* Header/Branding */
+        .brand-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease-out;
         }
 
-        .logo-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
-            display: inline-flex;
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            background: var(--primary-gradient);
+            border-radius: 25px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: white;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5);
+            animation: logoPulse 3s ease-in-out infinite;
+            position: relative;
         }
 
-        .logo h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 25px 80px rgba(102, 126, 234, 0.7); }
+        }
+
+        .brand-logo::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 28px;
+            padding: 5px;
+            background: var(--primary-gradient);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+            animation: rotateBorder 10s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .brand-name {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #667eea 50%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: -2px;
+        }
+
+        .brand-tagline {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+            font-weight: 400;
             margin-bottom: 8px;
         }
 
-        .logo p {
-            color: #666;
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        .network-selector {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .network-btn {
-            padding: 18px 15px;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
+        .powered-by {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
             font-weight: 600;
-            color: #666;
+        }
+
+        /* Main Card */
+        .tracker-card {
+            background: rgba(15, 15, 30, 0.8);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 50px 45px;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.7);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
             position: relative;
             overflow: hidden;
         }
 
-        .network-btn::before {
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tracker-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+        }
+
+        /* Chain Grid */
+        .chains-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .chain-card {
+            padding: 25px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chain-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
             transition: left 0.5s;
         }
 
-        .network-btn:hover::before {
+        .chain-card:hover::before {
             left: 100%;
         }
 
-        .network-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        .chain-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .network-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-color: #667eea;
-            color: white;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        .chain-card.active {
+            border-width: 2px;
+            transform: translateY(-5px);
         }
 
-        .network-btn i {
-            font-size: 1.5rem;
-            display: block;
-            margin-bottom: 8px;
+        .chain-card.active.eth {
+            background: rgba(98, 126, 234, 0.15);
+            border-color: #627EEA;
+            box-shadow: 0 15px 50px rgba(98, 126, 234, 0.4);
         }
 
-        .network-btn .network-name {
-            font-size: 0.85rem;
-            display: block;
+        .chain-card.active.bsc {
+            background: rgba(243, 186, 47, 0.15);
+            border-color: #F3BA2F;
+            box-shadow: 0 15px 50px rgba(243, 186, 47, 0.4);
         }
 
-        .input-container {
-            position: relative;
-            margin-bottom: 25px;
+        .chain-card.active.polygon {
+            background: rgba(130, 71, 229, 0.15);
+            border-color: #8247E5;
+            box-shadow: 0 15px 50px rgba(130, 71, 229, 0.4);
         }
 
-        .input-wrapper {
-            position: relative;
+        .chain-card.active.base {
+            background: rgba(0, 82, 255, 0.15);
+            border-color: #0052FF;
+            box-shadow: 0 15px 50px rgba(0, 82, 255, 0.4);
         }
 
-        .address-input {
-            width: 100%;
-            padding: 20px 55px 20px 20px;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            font-size: 1rem;
-            font-family: 'Courier New', monospace;
-            color: #333;
-            transition: all 0.3s ease;
+        .chain-card.active.solana {
+            background: rgba(20, 241, 149, 0.15);
+            border-color: #14F195;
+            box-shadow: 0 15px 50px rgba(20, 241, 149, 0.4);
         }
 
-        .address-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
-        }
-
-        .clear-btn {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 35px;
-            height: 35px;
-            background: #f5f5f5;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
+        .chain-icon-wrapper {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #999;
-            transition: all 0.2s;
-            opacity: 0;
-        }
-
-        .clear-btn.show {
-            opacity: 1;
-        }
-
-        .clear-btn:hover {
-            background: #ff4757;
+            margin: 0 auto 15px;
+            font-size: 1.8rem;
             color: white;
-            transform: translateY(-50%) scale(1.1);
         }
 
-        .validation-msg {
-            margin-top: 10px;
-            padding: 12px 15px;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
+        .chain-card.eth .chain-icon-wrapper { background: var(--eth-gradient); }
+        .chain-card.bsc .chain-icon-wrapper { background: var(--bsc-gradient); }
+        .chain-card.polygon .chain-icon-wrapper { background: var(--polygon-gradient); }
+        .chain-card.base .chain-icon-wrapper { background: var(--base-gradient); }
+        .chain-card.solana .chain-icon-wrapper { background: var(--solana-gradient); }
 
-        .validation-msg.show {
-            display: flex;
-        }
-
-        .validation-msg.success {
-            background: rgba(76, 175, 80, 0.15);
-            color: #4CAF50;
-            border: 1px solid rgba(76, 175, 80, 0.3);
-        }
-
-        .validation-msg.error {
-            background: rgba(255, 71, 87, 0.15);
-            color: #ff4757;
-            border: 1px solid rgba(255, 71, 87, 0.3);
-        }
-
-        .action-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 15px;
-            color: white;
+        .chain-name-text {
             font-size: 1.1rem;
             font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            color: white;
+            text-align: center;
+            margin-bottom: 5px;
         }
 
-        .action-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        .chain-type {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
         }
 
-        .action-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        /* Input Section */
+        .input-section {
+            margin-bottom: 35px;
         }
 
-        .action-btn i {
-            font-size: 1.2rem;
-        }
-
-        .quick-access {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-
-        .quick-access h4 {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #666;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .quick-links {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .quick-link {
-            padding: 12px 15px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            text-decoration: none;
-            color: #666;
+        .section-label {
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .quick-link:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .input-container {
+            position: relative;
+        }
+
+        .address-input {
+            width: 100%;
+            padding: 22px 130px 22px 22px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             color: white;
-            border-color: transparent;
-            transform: translateX(3px);
-        }
-
-        .quick-link i {
             font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
         }
 
-        .features {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid #e0e0e0;
+        .address-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 50px rgba(102, 126, 234, 0.2);
         }
 
-        .feature-item {
+        .address-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .input-actions {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .input-action-btn {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .input-action-btn.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .input-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .input-action-btn.detect {
+            background: var(--primary-gradient);
+            border: none;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            margin-top: 18px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-bar.show { display: flex; }
+
+        .status-bar.success {
+            background: rgba(20, 241, 149, 0.12);
+            border: 1px solid rgba(20, 241, 149, 0.3);
+        }
+
+        .status-bar.error {
+            background: rgba(255, 71, 87, 0.12);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+        }
+
+        .status-bar.info {
+            background: rgba(102, 126, 234, 0.12);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .status-bar.success .status-icon {
+            background: rgba(20, 241, 149, 0.2);
+            color: #14F195;
+        }
+
+        .status-bar.error .status-icon {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+
+        .status-bar.info .status-icon {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        .status-text {
+            flex: 1;
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .status-text strong {
+            font-weight: 700;
+        }
+
+        /* Action Button */
+        .action-button {
+            width: 100%;
+            padding: 22px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .action-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .action-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.6);
+        }
+
+        .action-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .button-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Examples Section */
+        .examples-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 35px;
+        }
+
+        .examples-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .examples-title {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+        }
+
+        .example-item {
+            padding: 16px 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 15px;
-            color: #666;
-            font-size: 0.9rem;
         }
 
-        .feature-icon {
+        .example-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .example-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             font-size: 1.1rem;
+            flex-shrink: 0;
         }
 
+        .example-info {
+            flex: 1;
+        }
+
+        .example-name {
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+        }
+
+        .example-chain {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .stat-icon-wrapper {
+            width: 55px;
+            height: 55px;
+            background: var(--primary-gradient);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Loading Spinner */
         .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
             border-top-color: white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -378,49 +676,31 @@
             to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 768px) {
-            .main-card {
-                padding: 35px 25px;
-            }
-            .logo h1 {
-                font-size: 1.5rem;
-            }
-            .network-selector {
-                grid-template-columns: 1fr;
-            }
-            .quick-links {
-                grid-template-columns: 1fr;
-            }
-        }
-
+        /* Toast */
         .toast {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
+            top: 30px;
+            right: 30px;
+            background: rgba(15, 15, 30, 0.95);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
             padding: 20px 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 70px rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             gap: 15px;
             z-index: 1000;
-            animation: slideInRight 0.3s ease-out;
+            animation: toastIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             max-width: 400px;
         }
 
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .toast-icon {
+        .toast-icon-wrapper {
             width: 45px;
             height: 45px;
             border-radius: 50%;
@@ -428,290 +708,437 @@
             align-items: center;
             justify-content: center;
             font-size: 1.3rem;
+            flex-shrink: 0;
+            background: rgba(20, 241, 149, 0.2);
+            color: #14F195;
         }
 
-        .toast.success .toast-icon {
-            background: rgba(76, 175, 80, 0.15);
-            color: #4CAF50;
-        }
-
-        .toast-content h5 {
+        .toast-content h6 {
+            color: white;
+            font-weight: 700;
             margin: 0 0 5px 0;
             font-size: 1rem;
-            font-weight: 700;
-            color: #333;
         }
 
         .toast-content p {
+            color: rgba(255, 255, 255, 0.6);
             margin: 0;
             font-size: 0.85rem;
-            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .brand-name {
+                font-size: 2.5rem;
+            }
+            .tracker-card {
+                padding: 35px 25px;
+            }
+            .chains-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+            .toast {
+                right: 20px;
+                left: 20px;
+                max-width: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="animated-bg" id="bubbleContainer"></div>
+    <!-- Grid Background -->
+    <div class="grid-background"></div>
 
-    <div class="container">
-        <div class="main-card">
-            <div class="logo">
-                <div class="logo-icon">
+    <!-- Orbs -->
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <div class="container-custom">
+            <!-- Brand Header -->
+            <div class="brand-header">
+                <div class="brand-logo">
                     <i class="fas fa-rocket"></i>
                 </div>
-                <h1>Quick Explorer</h1>
-                <p>Instant Blockchain Access - Paste & Go!</p>
+                <h1 class="brand-name">AGENTIC TRACKER</h1>
+                <p class="brand-tagline">Multi-Chain Blockchain Explorer</p>
+                <p class="powered-by">Powered by Yuzar © 2025</p>
             </div>
 
-            <div class="network-selector">
-                <button class="network-btn active" id="btn-eth" onclick="selectNetwork('eth')">
-                    <i class="fab fa-ethereum"></i>
-                    <span class="network-name">Ethereum</span>
+            <!-- Main Tracker Card -->
+            <div class="tracker-card">
+                <!-- Chain Selection -->
+                <div class="section-label">
+                    <i class="fas fa-network-wired"></i>
+                    Select Blockchain Network
+                </div>
+                <div class="chains-grid">
+                    <div class="chain-card eth active" id="chain-eth" onclick="selectChain('eth')">
+                        <div class="chain-icon-wrapper">
+                            <i class="fab fa-ethereum"></i>
+                        </div>
+                        <div class="chain-name-text">Ethereum</div>
+                        <div class="chain-type">EVM Chain</div>
+                    </div>
+                    <div class="chain-card bsc" id="chain-bsc" onclick="selectChain('bsc')">
+                        <div class="chain-icon-wrapper">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="chain-name-text">BSC</div>
+                        <div class="chain-type">BNB Chain</div>
+                    </div>
+                    <div class="chain-card polygon" id="chain-polygon" onclick="selectChain('polygon')">
+                        <div class="chain-icon-wrapper">
+                            <i class="fas fa-chess-knight"></i>
+                        </div>
+                        <div class="chain-name-text">Polygon</div>
+                        <div class="chain-type">L2 Chain</div>
+                    </div>
+                    <div class="chain-card base" id="chain-base" onclick="selectChain('base')">
+                        <div class="chain-icon-wrapper">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="chain-name-text">Base</div>
+                        <div class="chain-type">L2 on ETH</div>
+                    </div>
+                    <div class="chain-card solana" id="chain-solana" onclick="selectChain('solana')">
+                        <div class="chain-icon-wrapper">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div class="chain-name-text">Solana</div>
+                        <div class="chain-type">High Speed</div>
+                    </div>
+                </div>
+
+                <!-- Input Section -->
+                <div class="input-section">
+                    <div class="section-label" id="inputLabel">
+                        <i class="fas fa-wallet"></i>
+                        Enter Address
+                    </div>
+                    <div class="input-container">
+                        <input 
+                            type="text" 
+                            class="address-input" 
+                            id="addressInput"
+                            placeholder="Paste address here..."
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+                        <div class="input-actions">
+                            <button class="input-action-btn detect" id="detectBtn" onclick="autoDetect()" title="Auto Detect Chain">
+                                <i class="fas fa-magic"></i>
+                            </button>
+                            <button class="input-action-btn" id="clearBtn" onclick="clearInput()" title="Clear">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="status-bar" id="statusBar">
+                        <div class="status-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="status-text" id="statusText"></div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button class="action-button" id="actionBtn" onclick="openExplorer()" disabled>
+                    <div class="button-content">
+                        <i class="fas fa-rocket"></i>
+                        <span>Launch Explorer</span>
+                    </div>
                 </button>
-                <button class="network-btn" id="btn-bsc" onclick="selectNetwork('bsc')">
-                    <i class="fas fa-coins"></i>
-                    <span class="network-name">BSC</span>
-                </button>
-                <button class="network-btn" id="btn-polygon" onclick="selectNetwork('polygon')">
-                    <i class="fas fa-cube"></i>
-                    <span class="network-name">Polygon</span>
-                </button>
-            </div>
 
-            <div class="input-container">
-                <div class="input-wrapper">
-                    <input 
-                        type="text" 
-                        class="address-input" 
-                        id="addressInput"
-                        placeholder="Paste contract address here (0x...)"
-                        autocomplete="off"
-                        spellcheck="false"
-                    >
-                    <button class="clear-btn" id="clearBtn" onclick="clearInput()">
-                        <i class="fas fa-times"></i>
-                    </button>
+                <!-- Examples -->
+                <div class="examples-section">
+                    <div class="examples-header">
+                        <div class="examples-title">
+                            <i class="fas fa-star"></i>
+                            Popular Addresses
+                        </div>
+                    </div>
+                    <div class="examples-grid" id="examplesGrid">
+                        <!-- Populated by JS -->
+                    </div>
                 </div>
-                <div class="validation-msg" id="validationMsg">
-                    <i class="fas fa-check-circle"></i>
-                    <span id="validationText"></span>
-                </div>
-            </div>
 
-            <button class="action-btn" id="goBtn" onclick="openExplorer()" disabled>
-                <i class="fas fa-external-link-alt"></i>
-                <span>Open in Explorer</span>
-            </button>
-
-            <div class="quick-access">
-                <h4><i class="fas fa-bolt"></i> Quick Access</h4>
-                <div class="quick-links">
-                    <a href="#" class="quick-link" onclick="pasteExample('usdt'); return false;">
-                        <i class="fas fa-dollar-sign"></i>
-                        USDT Contract
-                    </a>
-                    <a href="#" class="quick-link" onclick="pasteExample('usdc'); return false;">
-                        <i class="fas fa-coins"></i>
-                        USDC Contract
-                    </a>
-                    <a href="#" class="quick-link" onclick="pasteExample('weth'); return false;">
-                        <i class="fab fa-ethereum"></i>
-                        WETH Contract
-                    </a>
-                    <a href="#" class="quick-link" onclick="pasteExample('vitalik'); return false;">
-                        <i class="fas fa-user"></i>
-                        Vitalik.eth
-                    </a>
+                <!-- Stats -->
+                <div class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-value" id="statScans">0</div>
+                        <div class="stat-label">Scans Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper" style="background: var(--solana-gradient);">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Chains Supported</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper" style="background: var(--base-gradient);">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="stat-value">< 2s</div>
+                        <div class="stat-label">Avg Response</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="features">
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-zap"></i>
-                    </div>
-                    <div>
-                        <strong>Instant Access</strong><br>
-                        <small>Paste address and go to explorer instantly</small>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div>
-                        <strong>Auto Validation</strong><br>
-                        <small>Automatic address format checking</small>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-network-wired"></i>
-                    </div>
-                    <div>
-                        <strong>Multi-Chain Support</strong><br>
-                        <small>Ethereum, BSC, Polygon, and more</small>
-                    </div>
-                </div>
+            <!-- Footer -->
+            <div class="footer">
+                <p>
+                    Built with ❤️ by <strong>Yuzar</strong> | 
+                    <a href="https://github.com/yuzar" target="_blank">GitHub</a> | 
+                    <a href="mailto:yuzar@example.com">Contact</a>
+                </p>
             </div>
         </div>
     </div>
 
     <script>
-        const EXPLORERS = {
+        const CHAINS = {
             eth: {
-                name: 'Etherscan',
-                url: 'https://etherscan.io/address/',
-                icon: 'fab fa-ethereum'
+                name: 'Ethereum',
+                explorer: 'https://etherscan.io/address/',
+                format: /^0x[a-fA-F0-9]{40}$/,
+                placeholder: 'Enter Ethereum address (0x...)',
+                examples: [
+                    { name: 'USDT Contract', address: '0xdAC17F958D2ee523a2206206994597C13D831ec7', icon: 'fas fa-dollar-sign', gradient: 'var(--eth-gradient)' },
+                    { name: 'Vitalik.eth', address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', icon: 'fas fa-user', gradient: 'var(--eth-gradient)' }
+                ]
             },
             bsc: {
-                name: 'BSCScan',
-                url: 'https://bscscan.com/address/',
-                icon: 'fas fa-coins'
+                name: 'BSC',
+                explorer: 'https://bscscan.com/address/',
+                format: /^0x[a-fA-F0-9]{40}$/,
+                placeholder: 'Enter BSC address (0x...)',
+                examples: [
+                    { name: 'WBNB Contract', address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', icon: 'fas fa-coins', gradient: 'var(--bsc-gradient)' },
+                    { name: 'PancakeSwap', address: '0x10ED43C718714eb63d5aA57B78B54704E256024E', icon: 'fas fa-exchange-alt', gradient: 'var(--bsc-gradient)' }
+                ]
             },
             polygon: {
-                name: 'PolygonScan',
-                url: 'https://polygonscan.com/address/',
-                icon: 'fas fa-cube'
+                name: 'Polygon',
+                explorer: 'https://polygonscan.com/address/',
+                format: /^0x[a-fA-F0-9]{40}$/,
+                placeholder: 'Enter Polygon address (0x...)',
+                examples: [
+                    { name: 'USDC Polygon', address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', icon: 'fas fa-dollar-sign', gradient: 'var(--polygon-gradient)' },
+                    { name: 'WMATIC', address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', icon: 'fas fa-chess-knight', gradient: 'var(--polygon-gradient)' }
+                ]
+            },
+            base: {
+                name: 'Base',
+                explorer: 'https://basescan.org/address/',
+                format: /^0x[a-fA-F0-9]{40}$/,
+                placeholder: 'Enter Base address (0x...)',
+                examples: [
+                    { name: 'USDC Base', address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', icon: 'fas fa-dollar-sign', gradient: 'var(--base-gradient)' },
+                    { name: 'WETH Base', address: '0x4200000000000000000000000000000000000006', icon: 'fab fa-ethereum', gradient: 'var(--base-gradient)' }
+                ]
+            },
+            solana: {
+                name: 'Solana',
+                explorer: 'https://solscan.io/account/',
+                format: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/,
+                placeholder: 'Enter Solana address...',
+                examples: [
+                    { name: 'USDC Solana', address: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', icon: 'fas fa-dollar-sign', gradient: 'var(--solana-gradient)' },
+                    { name: 'Wrapped SOL', address: 'So11111111111111111111111111111111111111112', icon: 'fas fa-sun', gradient: 'var(--solana-gradient)' }
+                ]
             }
         };
 
-        const EXAMPLES = {
-            usdt: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-            usdc: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-            weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-            vitalik: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
-        };
-
-        let currentNetwork = 'eth';
+        let currentChain = 'eth';
         let currentAddress = '';
+        let scanCount = 0;
 
-        // Create animated bubbles
-        function createBubbles() {
-            const container = document.getElementById('bubbleContainer');
-            for (let i = 0; i < 15; i++) {
-                const bubble = document.createElement('div');
-                bubble.className = 'bubble';
-                const size = Math.random() * 100 + 50;
-                bubble.style.width = size + 'px';
-                bubble.style.height = size + 'px';
-                bubble.style.left = Math.random() * 100 + '%';
-                bubble.style.top = Math.random() * 100 + '%';
-                bubble.style.animationDelay = Math.random() * 20 + 's';
-                bubble.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                container.appendChild(bubble);
-            }
+        function selectChain(chain) {
+            currentChain = chain;
+            
+            // Update UI
+            document.querySelectorAll('.chain-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(`chain-${chain}`).classList.add('active');
+            
+            // Update input
+            document.getElementById('addressInput').placeholder = CHAINS[chain].placeholder;
+            
+            // Update examples
+            updateExamples();
+            
+            // Clear and revalidate
+            clearInput();
+            showToast('Chain Selected', `Now tracking ${CHAINS[chain].name} addresses`);
         }
 
-        function selectNetwork(network) {
-            currentNetwork = network;
-            document.querySelectorAll('.network-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.getElementById(`btn-${network}`).classList.add('active');
+        function updateExamples() {
+            const grid = document.getElementById('examplesGrid');
+            grid.innerHTML = '';
             
-            // Revalidate if address exists
-            if (currentAddress) {
-                validateAddress(currentAddress);
-            }
+            CHAINS[currentChain].examples.forEach(ex => {
+                const item = document.createElement('div');
+                item.className = 'example-item';
+                item.onclick = () => loadExample(ex.address, ex.name);
+                item.innerHTML = `
+                    <div class="example-icon" style="background: ${ex.gradient}">
+                        <i class="${ex.icon}"></i>
+                    </div>
+                    <div class="example-info">
+                        <div class="example-name">${ex.name}</div>
+                        <div class="example-chain">${CHAINS[currentChain].name}</div>
+                    </div>
+                `;
+                grid.appendChild(item);
+            });
         }
 
         function validateAddress(address) {
-            const validationMsg = document.getElementById('validationMsg');
-            const validationText = document.getElementById('validationText');
-            const goBtn = document.getElementById('goBtn');
+            const statusBar = document.getElementById('statusBar');
+            const statusText = document.getElementById('statusText');
+            const actionBtn = document.getElementById('actionBtn');
             const clearBtn = document.getElementById('clearBtn');
+            const detectBtn = document.getElementById('detectBtn');
 
-            // Show/hide clear button
-            if (address) {
-                clearBtn.classList.add('show');
-            } else {
-                clearBtn.classList.remove('show');
-            }
+            clearBtn.classList.toggle('show', !!address);
+            detectBtn.classList.toggle('show', !!address);
 
             if (!address) {
-                validationMsg.classList.remove('show');
-                goBtn.disabled = true;
+                statusBar.classList.remove('show');
+                actionBtn.disabled = true;
                 return false;
             }
 
-            const isValid = /^0x[a-fA-F0-9]{40}$/.test(address);
+            const isValid = CHAINS[currentChain].format.test(address);
 
             if (isValid) {
-                validationMsg.className = 'validation-msg success show';
-                validationText.innerHTML = `Valid address! Ready to open in <strong>${EXPLORERS[currentNetwork].name}</strong>`;
-                goBtn.disabled = false;
+                statusBar.className = 'status-bar success show';
+                statusBar.querySelector('.status-icon i').className = 'fas fa-check-circle';
+                statusText.innerHTML = `<strong>Valid ${CHAINS[currentChain].name} address!</strong> Ready to launch explorer`;
+                actionBtn.disabled = false;
                 currentAddress = address;
                 return true;
             } else {
-                validationMsg.className = 'validation-msg error show';
-                validationText.innerHTML = 'Invalid address format. Must be 0x + 40 hex characters';
-                goBtn.disabled = true;
+                statusBar.className = 'status-bar error show';
+                statusBar.querySelector('.status-icon i').className = 'fas fa-exclamation-circle';
+                statusText.innerHTML = `Invalid format for ${CHAINS[currentChain].name}. Please check your address.`;
+                actionBtn.disabled = true;
                 return false;
             }
+        }
+
+        function autoDetect() {
+            const address = document.getElementById('addressInput').value.trim();
+            if (!address) {
+                showToast('Auto-Detect', 'Please enter an address first', 'info');
+                return;
+            }
+
+            // Try to detect chain
+            for (const [chain, data] of Object.entries(CHAINS)) {
+                if (data.format.test(address)) {
+                    if (chain !== currentChain) {
+                        selectChain(chain);
+                        showToast('Chain Detected!', `Switched to ${data.name}`, 'success');
+                    } else {
+                        showToast('Chain Confirmed', `Address matches ${data.name}`, 'success');
+                    }
+                    validateAddress(address);
+                    return;
+                }
+            }
+
+            showToast('Detection Failed', 'Could not detect chain from address format', 'error');
         }
 
         function clearInput() {
             document.getElementById('addressInput').value = '';
             currentAddress = '';
             document.getElementById('clearBtn').classList.remove('show');
-            document.getElementById('validationMsg').classList.remove('show');
-            document.getElementById('goBtn').disabled = true;
+            document.getElementById('detectBtn').classList.remove('show');
+            document.getElementById('statusBar').classList.remove('show');
+            document.getElementById('actionBtn').disabled = true;
             document.getElementById('addressInput').focus();
         }
 
         function openExplorer() {
             if (!currentAddress) return;
 
-            const goBtn = document.getElementById('goBtn');
-            goBtn.innerHTML = '<div class="spinner"></div><span>Opening...</span>';
-            goBtn.disabled = true;
+            const actionBtn = document.getElementById('actionBtn');
+            const btnContent = actionBtn.querySelector('.button-content');
+            
+            btnContent.innerHTML = '<div class="spinner"></div><span>Launching...</span>';
+            actionBtn.disabled = true;
 
-            showToast('Opening in Explorer', `Redirecting to ${EXPLORERS[currentNetwork].name}...`);
+            showToast('Opening Explorer', `Launching ${CHAINS[currentChain].name} explorer...`);
 
             setTimeout(() => {
-                const url = EXPLORERS[currentNetwork].url + currentAddress;
+                const url = CHAINS[currentChain].explorer + currentAddress;
                 window.open(url, '_blank');
                 
-                goBtn.innerHTML = '<i class="fas fa-external-link-alt"></i><span>Open in Explorer</span>';
-                goBtn.disabled = false;
-            }, 500);
+                btnContent.innerHTML = '<i class="fas fa-rocket"></i><span>Launch Explorer</span>';
+                actionBtn.disabled = false;
+                
+                // Update stats
+                scanCount++;
+                document.getElementById('statScans').textContent = scanCount;
+            }, 600);
         }
 
-        function pasteExample(type) {
-            const address = EXAMPLES[type];
+        function loadExample(address, name) {
             document.getElementById('addressInput').value = address;
             validateAddress(address);
-            
-            const names = {
-                usdt: 'USDT Contract',
-                usdc: 'USDC Contract',
-                weth: 'WETH Contract',
-                vitalik: 'Vitalik Buterin'
-            };
-            showToast('Example Loaded', `${names[type]} address pasted!`);
+            showToast('Example Loaded', `${name} address loaded successfully`);
         }
 
-        function showToast(title, message) {
+        function showToast(title, message, type = 'success') {
             const existingToast = document.querySelector('.toast');
-            if (existingToast) {
-                existingToast.remove();
-            }
+            if (existingToast) existingToast.remove();
 
             const toast = document.createElement('div');
-            toast.className = 'toast success';
+            toast.className = 'toast';
             toast.innerHTML = `
-                <div class="toast-icon">
-                    <i class="fas fa-check-circle"></i>
+                <div class="toast-icon-wrapper">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
                 </div>
                 <div class="toast-content">
-                    <h5>${title}</h5>
+                    <h6>${title}</h6>
                     <p>${message}</p>
                 </div>
             `;
             document.body.appendChild(toast);
 
             setTimeout(() => {
-                toast.style.animation = 'slideInRight 0.3s ease-out reverse';
+                toast.style.animation = 'toastIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) reverse';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
@@ -722,27 +1149,27 @@
         });
 
         document.getElementById('addressInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !document.getElementById('goBtn').disabled) {
+            if (e.key === 'Enter' && !document.getElementById('actionBtn').disabled) {
                 openExplorer();
             }
         });
 
-        // Auto-paste detection
-        document.getElementById('addressInput').addEventListener('paste', (e) => {
+        document.getElementById('addressInput').addEventListener('paste', () => {
             setTimeout(() => {
-                const address = e.target.value.trim();
+                const address = document.getElementById('addressInput').value.trim();
                 if (validateAddress(address)) {
-                    showToast('Address Detected', 'Valid address pasted! Click to open explorer.');
+                    showToast('Address Pasted', 'Valid address detected!');
                 }
             }, 10);
         });
 
         // Initialize
-        createBubbles();
+        updateExamples();
         document.getElementById('addressInput').focus();
 
-        console.log('🚀 Quick Explorer Ready!');
-        console.log('💡 Paste any address to instantly open in blockchain explorer');
+        console.log('🚀 Agentic Tracker Yuzar - Initialized');
+        console.log('💎 All chains ready: ETH, BSC, Polygon, Base, Solana');
+        console.log('⚡ Powered by Yuzar © 2025');
     </script>
 </body>
 </html>
